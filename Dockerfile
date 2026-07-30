@@ -1,15 +1,11 @@
-FROM php:8.3-apache
+FROM php:8.3-cli
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN a2dismod -f mpm_event || true
-RUN a2dismod -f mpm_worker || true
-RUN a2enmod mpm_prefork rewrite
+WORKDIR /app
 
-COPY . /var/www/html/
+COPY . .
 
-RUN chown -R www-data:www-data /var/www/html
+EXPOSE 8080
 
-EXPOSE 80
-
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t /app"]
