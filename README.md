@@ -8,7 +8,10 @@ de 2026.
 ## Funciones
 
 - Formulario público con fotografía y validación de DUI.
+- Portada institucional y formulario en páginas separadas.
 - Código único de registro.
+- Credencial individual con fotografía.
+- Botones separados para imprimir y descargar PDF.
 - Panel administrativo protegido con contraseña.
 - Búsqueda de comunicadores y reporte imprimible/PDF.
 - Fotografías almacenadas dentro de MySQL para conservarlas en Railway.

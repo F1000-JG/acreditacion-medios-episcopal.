@@ -8,12 +8,12 @@ function fail(string $message): never
     http_response_code(422);
     echo '<!doctype html><html lang="es"><meta charset="utf-8"><title>Error</title>';
     echo '<body style="font-family:Arial;padding:40px"><h1>No se pudo completar el registro</h1>';
-    echo '<p>' . htmlspecialchars($message) . '</p><a href="index.php">Volver al formulario</a></body></html>';
+    echo '<p>' . htmlspecialchars($message) . '</p><a href="registro.php">Volver al formulario</a></body></html>';
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: index.php');
+    header('Location: registro.php');
     exit;
 }
 if (!hash_equals($_SESSION['csrf'] ?? '', (string)($_POST['csrf'] ?? ''))) {
@@ -72,6 +72,12 @@ try {
     fail('Ocurrió un problema al guardar los datos. Intentá nuevamente.');
 }
 
-$_SESSION['registro_exito'] = ['codigo' => $codigo, 'nombre' => $nombre, 'cargo' => $cargo, 'medio' => $medio];
-header('Location: index.php');
+$_SESSION['registro_exito'] = [
+    'codigo' => $codigo,
+    'nombre' => $nombre,
+    'cargo' => $cargo,
+    'medio' => $medio,
+    'tipo' => $tipo
+];
+header('Location: registro.php');
 exit;

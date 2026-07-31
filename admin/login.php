@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label class="field"><span>Contraseña administrativa</span><input name="password" type="password" required autofocus></label>
         <button class="primary-button" type="submit">Ingresar</button>
     </form>
-    <a href="../index.php">← Volver al registro público</a>
+    <a href="../index.php">← Volver al inicio</a>
 </main>
 </body>
 </html>

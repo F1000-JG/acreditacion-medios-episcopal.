@@ -26,9 +26,9 @@ if ($q !== '') {
 <body class="dashboard-page">
 <header class="dashboard-header">
     <div class="brand"><img src="../assets/escudo-diocesis.jpg" alt=""><span><b>Panel de acreditaciones</b><small>Pastoral de Comunicaciones</small></span></div>
-    <div><button type="button" onclick="window.print()">Imprimir / PDF</button><a href="logout.php">Cerrar sesión</a></div>
+    <div class="dashboard-actions"><button class="print-dashboard" type="button">Imprimir</button><button class="download-dashboard" type="button">Descargar PDF</button><a href="logout.php">Cerrar sesión</a></div>
 </header>
-<main class="dashboard">
+<main class="dashboard dashboard-report">
     <section class="dashboard-title">
         <div><span class="eyebrow dark">Directorio oficial</span><h1>Medios registrados</h1><p>Ordenación Episcopal · 15 de agosto de 2026</p></div>
         <div class="stat"><b><?= count($registros) ?></b><span>comunicadores</span></div>
@@ -57,5 +57,8 @@ if ($q !== '') {
         </table>
     </div>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="../assets/app.js"></script>
 </body>
 </html>
