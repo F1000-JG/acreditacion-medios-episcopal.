@@ -6,6 +6,8 @@ if (empty($_SESSION['admin'])) {
     exit;
 }
 require __DIR__ . '/../config/db.php';
+$_SESSION['admin_csrf'] ??= bin2hex(random_bytes(24));
+$publicFormUrl = 'https://' . ($_SERVER['HTTP_HOST'] ?? '') . '/registro.php';
 $q = trim((string)($_GET['q'] ?? ''));
 if ($q !== '') {
     $stmt = db()->prepare('SELECT * FROM comunicadores WHERE nombre_completo LIKE ? OR medio_comunicacion LIKE ? OR tipo_medio LIKE ? ORDER BY id DESC');
@@ -33,6 +35,18 @@ if ($q !== '') {
         <div><span class="eyebrow dark">Directorio oficial</span><h1>Medios registrados</h1><p>Ordenación Episcopal · 15 de agosto de 2026</p></div>
         <div class="stat"><b><?= count($registros) ?></b><span>comunicadores</span></div>
     </section>
+    <section class="public-link-card">
+        <div>
+            <span class="eyebrow dark">Enlace público</span>
+            <h2>Formulario para comunicadores</h2>
+            <p>Compartí este enlace para que cada comunicador pueda completar su propia inscripción.</p>
+        </div>
+        <div class="public-link-control">
+            <input id="publicFormLink" value="<?= htmlspecialchars($publicFormUrl) ?>" readonly>
+            <button class="copy-public-link" type="button">Copiar enlace</button>
+            <a href="../registro.php" target="_blank" rel="noopener">Abrir</a>
+        </div>
+    </section>
     <form class="search-form" method="get">
         <input name="q" value="<?= htmlspecialchars($q) ?>" placeholder="Buscar por nombre, medio o tipo…">
         <button type="submit">Buscar</button>
@@ -40,7 +54,7 @@ if ($q !== '') {
     </form>
     <div class="table-shell">
         <table>
-            <thead><tr><th>Comunicador</th><th>Medio</th><th>Función</th><th>Tipo</th><th>Contacto</th><th>DUI</th></tr></thead>
+            <thead><tr><th>Comunicador</th><th>Medio</th><th>Función</th><th>Tipo</th><th>Contacto</th><th>DUI</th><th>Acciones</th></tr></thead>
             <tbody>
             <?php foreach ($registros as $r): ?>
                 <tr>
@@ -50,9 +64,19 @@ if ($q !== '') {
                     <td><span class="media-badge"><?= htmlspecialchars($r['tipo_medio']) ?></span></td>
                     <td><?= htmlspecialchars($r['telefono']) ?><small><?= htmlspecialchars($r['correo']) ?></small></td>
                     <td><?= htmlspecialchars($r['dui']) ?></td>
+                    <td>
+                        <div class="row-actions">
+                            <a href="credential.php?id=<?= (int)$r['id'] ?>">Credencial</a>
+                            <form method="post" action="delete.php" onsubmit="return confirm('¿Seguro que querés borrar este registro? Esta acción no se puede deshacer.');">
+                                <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['admin_csrf']) ?>">
+                                <input type="hidden" name="id" value="<?= (int)$r['id'] ?>">
+                                <button type="submit">Borrar</button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             <?php endforeach; ?>
-            <?php if (!$registros): ?><tr><td class="empty" colspan="6">No hay registros para mostrar.</td></tr><?php endif; ?>
+            <?php if (!$registros): ?><tr><td class="empty" colspan="7">No hay registros para mostrar.</td></tr><?php endif; ?>
             </tbody>
         </table>
     </div>

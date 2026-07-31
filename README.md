@@ -13,6 +13,9 @@ de 2026.
 - Credencial individual con fotografía.
 - Botones separados para imprimir y descargar PDF.
 - Panel administrativo protegido con contraseña.
+- Enlace público del formulario listo para copiar desde el panel.
+- Eliminación segura de registros de prueba desde administración.
+- Impresión y descarga PDF de credenciales desde cada registro.
 - Búsqueda de comunicadores y reporte imprimible/PDF.
 - Fotografías almacenadas dentro de MySQL para conservarlas en Railway.
 - Diseño adaptable a computadora y celular.

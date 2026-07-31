@@ -48,6 +48,16 @@ document.querySelector('.download-credential')?.addEventListener('click', async 
 
 document.querySelector('.print-dashboard')?.addEventListener('click', () => window.print());
 
+document.querySelector('.copy-public-link')?.addEventListener('click', async (event) => {
+  const input = document.querySelector('#publicFormLink');
+  if (!input) return;
+  await navigator.clipboard.writeText(input.value);
+  const button = event.currentTarget;
+  const previousText = button.textContent;
+  button.textContent = 'Enlace copiado';
+  setTimeout(() => { button.textContent = previousText; }, 1800);
+});
+
 document.querySelector('.download-dashboard')?.addEventListener('click', async (event) => {
   const button = event.currentTarget;
   const dashboard = document.querySelector('.dashboard-report');
