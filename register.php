@@ -61,10 +61,10 @@ $codigo = 'PRENSA-' . strtoupper(substr(bin2hex(random_bytes(6)), 0, 8));
 try {
     $stmt = db()->prepare(
         'INSERT INTO comunicadores
-        (codigo, nombre_completo, edad, medio_comunicacion, cargo_funcion, telefono, correo, dui, tipo_medio, foto, foto_tipo)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        (codigo, nombre_completo, edad, medio_comunicacion, cargo_funcion, telefono, correo, dui, tipo_medio, foto, foto_tipo, estado)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
-    $stmt->execute([$codigo, $nombre, $edad, $medio, $cargo, $telefono, $correo, $dui, $tipo, $foto, $mime]);
+    $stmt->execute([$codigo, $nombre, $edad, $medio, $cargo, $telefono, $correo, $dui, $tipo, $foto, $mime, 'Pendiente']);
 } catch (PDOException $e) {
     if ((string)$e->getCode() === '23000') {
         fail('Ya existe un comunicador registrado con este DUI.');
@@ -73,11 +73,8 @@ try {
 }
 
 $_SESSION['registro_exito'] = [
-    'codigo' => $codigo,
     'nombre' => $nombre,
-    'cargo' => $cargo,
-    'medio' => $medio,
-    'tipo' => $tipo
+    'correo' => $correo
 ];
 header('Location: registro.php');
 exit;

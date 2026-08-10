@@ -7,6 +7,8 @@ if (empty($_SESSION['admin'])) {
 }
 require __DIR__ . '/../config/db.php';
 $_SESSION['admin_csrf'] ??= bin2hex(random_bytes(24));
+$flash = $_SESSION['admin_flash'] ?? null;
+unset($_SESSION['admin_flash']);
 $publicFormUrl = 'https://' . ($_SERVER['HTTP_HOST'] ?? '') . '/registro.php';
 $q = trim((string)($_GET['q'] ?? ''));
 if ($q !== '') {
@@ -31,6 +33,7 @@ if ($q !== '') {
     <div class="dashboard-actions"><button class="print-dashboard" type="button">Imprimir</button><button class="download-dashboard" type="button">Descargar PDF</button><a href="logout.php">Cerrar sesión</a></div>
 </header>
 <main class="dashboard dashboard-report">
+    <?php if ($flash): ?><div class="admin-flash <?= htmlspecialchars($flash['type']) ?>"><?= htmlspecialchars($flash['message']) ?></div><?php endif; ?>
     <section class="dashboard-title">
         <div><span class="eyebrow dark">Directorio oficial</span><h1>Medios registrados</h1><p>Ordenación Episcopal · 15 de agosto de 2026</p></div>
         <div class="stat"><b><?= count($registros) ?></b><span>comunicadores</span></div>
@@ -54,7 +57,7 @@ if ($q !== '') {
     </form>
     <div class="table-shell">
         <table>
-            <thead><tr><th>Comunicador</th><th>Medio</th><th>Función</th><th>Tipo</th><th>Contacto</th><th>DUI</th><th>Acciones</th></tr></thead>
+            <thead><tr><th>Comunicador</th><th>Medio</th><th>Función</th><th>Tipo</th><th>Contacto</th><th>DUI</th><th>Estado</th><th>Acciones</th></tr></thead>
             <tbody>
             <?php foreach ($registros as $r): ?>
                 <tr>
@@ -64,9 +67,25 @@ if ($q !== '') {
                     <td><span class="media-badge"><?= htmlspecialchars($r['tipo_medio']) ?></span></td>
                     <td><?= htmlspecialchars($r['telefono']) ?><small><?= htmlspecialchars($r['correo']) ?></small></td>
                     <td><?= htmlspecialchars($r['dui']) ?></td>
+                    <td><span class="status-badge status-<?= strtolower($r['estado']) ?>"><?= htmlspecialchars($r['estado']) ?></span></td>
                     <td>
                         <div class="row-actions">
-                            <a href="credential.php?id=<?= (int)$r['id'] ?>">Credencial</a>
+                            <?php if ($r['estado'] === 'Pendiente'): ?>
+                                <form method="post" action="review.php">
+                                    <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['admin_csrf']) ?>">
+                                    <input type="hidden" name="id" value="<?= (int)$r['id'] ?>">
+                                    <input type="hidden" name="action" value="approve">
+                                    <button class="approve-button" type="submit">Aprobar</button>
+                                </form>
+                                <form method="post" action="review.php">
+                                    <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['admin_csrf']) ?>">
+                                    <input type="hidden" name="id" value="<?= (int)$r['id'] ?>">
+                                    <input type="hidden" name="action" value="reject">
+                                    <button class="reject-button" type="submit">Rechazar</button>
+                                </form>
+                            <?php elseif ($r['estado'] === 'Aprobada'): ?>
+                                <a href="credential.php?id=<?= (int)$r['id'] ?>">Credencial</a>
+                            <?php endif; ?>
                             <form method="post" action="delete.php" onsubmit="return confirm('¿Seguro que querés borrar este registro? Esta acción no se puede deshacer.');">
                                 <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['admin_csrf']) ?>">
                                 <input type="hidden" name="id" value="<?= (int)$r['id'] ?>">
@@ -76,7 +95,7 @@ if ($q !== '') {
                     </td>
                 </tr>
             <?php endforeach; ?>
-            <?php if (!$registros): ?><tr><td class="empty" colspan="7">No hay registros para mostrar.</td></tr><?php endif; ?>
+            <?php if (!$registros): ?><tr><td class="empty" colspan="8">No hay registros para mostrar.</td></tr><?php endif; ?>
             </tbody>
         </table>
     </div>

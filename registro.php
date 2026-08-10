@@ -37,7 +37,7 @@ $_SESSION['csrf'] = bin2hex(random_bytes(24));
             <div class="steps-card">
                 <div><span>1</span><p>Ingresá tus datos.</p></div>
                 <div><span>2</span><p>Subí una fotografía clara.</p></div>
-                <div><span>3</span><p>Descargá tu credencial.</p></div>
+                <div><span>3</span><p>Esperá la respuesta por correo.</p></div>
             </div>
             <div class="privacy-note"><span>✦</span><p>Los datos se utilizarán únicamente para organización, acreditación y logística de medios.</p></div>
         </aside>
@@ -58,7 +58,7 @@ $_SESSION['csrf'] = bin2hex(random_bytes(24));
                 <label class="field"><span>Número de teléfono</span><input name="telefono" type="tel" required maxlength="30" autocomplete="tel" inputmode="tel" placeholder="0000-0000"></label>
                 <label class="field"><span>Correo electrónico</span><input name="correo" type="email" required maxlength="150" autocomplete="email" inputmode="email" placeholder="nombre@medio.com"></label>
             </div>
-            <button class="primary-button" type="submit">Crear acreditación <span>→</span></button>
+            <button class="primary-button" type="submit">Enviar solicitud <span>→</span></button>
         </form>
     </section>
 </main>
@@ -66,15 +66,17 @@ $_SESSION['csrf'] = bin2hex(random_bytes(24));
 <div class="success-modal" role="dialog" aria-modal="true">
     <section class="credential-dialog">
         <button type="button" class="modal-close" aria-label="Cerrar">×</button>
-        <div class="credential" id="credential" data-file="<?= htmlspecialchars('credencial-' . $exito['codigo']) ?>">
+        <div class="credential request-confirmation">
             <header class="credential-header"><img src="assets/escudo-diocesis.jpg" alt=""><div><b>Diócesis de Zacatecoluca</b><span>Logística de medios</span></div></header>
-            <div class="credential-title"><span>Acreditación oficial</span><h2>Ordenación Episcopal</h2><p>Monseñor Ramiro Landaverde</p></div>
-            <img class="credential-photo" src="api/photo.php?codigo=<?= urlencode($exito['codigo']) ?>" alt="Fotografía de <?= htmlspecialchars($exito['nombre']) ?>">
-            <div class="credential-person"><h3><?= htmlspecialchars($exito['nombre']) ?></h3><p><?= htmlspecialchars($exito['cargo']) ?></p><b><?= htmlspecialchars($exito['medio']) ?></b><span><?= htmlspecialchars($exito['tipo']) ?></span></div>
-            <div class="credential-code"><?= htmlspecialchars($exito['codigo']) ?></div>
-            <footer class="credential-footer"><span>15 DE AGOSTO DE 2026</span><b>PRENSA</b></footer>
+            <div class="credential-title"><span>Solicitud recibida</span><h2>Registro pendiente de revisión</h2><p>Ordenación Episcopal</p></div>
+            <div class="request-confirmation-body">
+                <h3><?= htmlspecialchars($exito['nombre']) ?></h3>
+                <p>Tu información fue guardada correctamente.</p>
+                <p>El equipo de Logística de Medios revisará la solicitud y enviará la respuesta a:</p>
+                <b><?= htmlspecialchars($exito['correo']) ?></b>
+            </div>
+            <footer class="credential-footer"><span>15 DE AGOSTO DE 2026</span><b>PENDIENTE</b></footer>
         </div>
-        <div class="credential-actions"><button class="action-button print-credential" type="button">Imprimir</button><button class="action-button gold download-credential" type="button">Descargar PDF</button></div>
     </section>
 </div>
 <?php endif; ?>

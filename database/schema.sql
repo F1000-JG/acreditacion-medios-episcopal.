@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS comunicadores (
     tipo_medio ENUM('Televisión','Radio','Prensa escrita','Medio digital','Otro') NOT NULL,
     foto LONGBLOB NOT NULL,
     foto_tipo VARCHAR(50) NOT NULL,
+    estado ENUM('Pendiente','Aprobada','Rechazada') NOT NULL DEFAULT 'Pendiente',
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_nombre (nombre_completo),
     INDEX idx_medio (medio_comunicacion)

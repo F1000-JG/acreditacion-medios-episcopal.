@@ -17,6 +17,11 @@ if (!$registro) {
     http_response_code(404);
     exit('Registro no encontrado.');
 }
+
+if ($registro['estado'] !== 'Aprobada') {
+    http_response_code(403);
+    exit('La credencial solo está disponible para solicitudes aprobadas.');
+}
 ?>
 <!doctype html>
 <html lang="es">

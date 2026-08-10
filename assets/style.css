@@ -131,6 +131,11 @@ button { cursor: pointer; }
 .credential-footer { width: 100%; min-height: 52px; margin-top: auto; padding: 12px 22px; display: flex; align-items: center; justify-content: space-between; background: var(--gold); color: #193727; }
 .credential-footer span { font-size: 9px; letter-spacing: .11em; }
 .credential-footer b { font-size: 12px; }
+.request-confirmation { min-height: 470px; }
+.request-confirmation-body { width: 100%; margin: auto 0; padding: 35px 28px; }
+.request-confirmation-body h3 { margin: 0 0 12px; color: var(--green); font: 700 29px/1 "Cormorant Garamond", serif; overflow-wrap: anywhere; }
+.request-confirmation-body p { margin: 9px auto; max-width: 330px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.request-confirmation-body b { display: block; margin-top: 16px; color: var(--green); font-size: 13px; overflow-wrap: anywhere; }
 .credential-actions { width: 100%; padding-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .action-button { min-height: 46px; border: 1px solid white; background: white; color: var(--green); font-weight: 700; }
 .action-button.gold { border-color: var(--gold); background: var(--gold); color: #173225; }
@@ -190,6 +195,15 @@ td > small { display: block; margin-top: 4px; color: var(--muted); }
 .row-actions a, .row-actions button { padding: 7px 9px; border: 1px solid var(--line); background: white; color: var(--green); font-size: 9px; font-weight: 700; white-space: nowrap; }
 .row-actions form { margin: 0; }
 .row-actions button { border-color: #e5b8b2; color: #a3382c; }
+.row-actions .approve-button { border-color: var(--green-2); background: var(--green); color: white; }
+.row-actions .reject-button { border-color: #e5b8b2; color: #a3382c; }
+.status-badge { display: inline-block; padding: 6px 9px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.status-pendiente { background: #fff3d5; color: #76540e; }
+.status-aprobada { background: var(--green-soft); color: var(--green); }
+.status-rechazada { background: #fff0ef; color: #9d2e2e; }
+.admin-flash { margin-bottom: 22px; padding: 14px 17px; border-left: 4px solid; background: white; font-size: 12px; box-shadow: 0 8px 24px rgba(7, 61, 43, .05); }
+.admin-flash.success { border-color: var(--green-2); color: var(--green); }
+.admin-flash.error { border-color: #b84437; color: #8c2e24; }
 .empty { padding: 55px; text-align: center; color: var(--muted); }
 .credential-page { min-height: 100vh; background: linear-gradient(135deg, #e7e1d5, #f8f5ed); }
 .credential-page-main { min-height: calc(100vh - 88px); padding: 45px 18px; display: grid; place-items: center; }

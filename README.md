@@ -10,7 +10,11 @@ de 2026.
 - Formulario público con fotografía y validación de DUI.
 - Portada institucional y formulario en páginas separadas.
 - Código único de registro.
-- Credencial individual con fotografía.
+- Solicitudes guardadas como `Pendiente` hasta que un administrador las revise.
+- Aprobación y rechazo manual desde el panel administrativo.
+- Credencial individual con fotografía, disponible únicamente al aprobar.
+- Correo de aprobación o rechazo mediante Resend.
+- Enlace privado para descargar la credencial aprobada.
 - Botones separados para imprimir y descargar PDF.
 - Panel administrativo protegido con contraseña.
 - Enlace público del formulario listo para copiar desde el panel.
@@ -29,7 +33,7 @@ de 2026.
 
 ```bash
 docker build -t acreditacion-medios .
-docker run --env-file .env -p 8080:80 acreditacion-medios
+docker run --env-file .env -p 8080:8080 acreditacion-medios
 ```
 
 Abrir `http://localhost:8080`.
@@ -41,7 +45,21 @@ Abrir `http://localhost:8080`.
 3. Agregar un servicio MySQL al mismo proyecto.
 4. Railway proporcionará automáticamente `MYSQLHOST`, `MYSQLPORT`,
    `MYSQLDATABASE`, `MYSQLUSER` y `MYSQLPASSWORD`.
-5. Agregar una variable `ADMIN_PASSWORD` con una contraseña segura.
-6. Generar el dominio público del servicio web.
+5. Agregar las variables de la aplicación:
 
-El sistema crea la tabla automáticamente en el primer acceso.
+   - `ADMIN_PASSWORD`: contraseña segura del panel.
+   - `RESEND_API_KEY`: llave API del proveedor Resend.
+   - `MAIL_FROM`: remitente autorizado, por ejemplo
+     `Logística de Medios <acreditaciones@tu-dominio.com>`.
+   - `APP_URL`: dominio público completo, sin diagonal final.
+   - `CREDENTIAL_SECRET`: cadena larga y aleatoria para proteger los enlaces.
+
+6. Generar el dominio público del servicio web y usarlo como `APP_URL`.
+
+El dominio de `MAIL_FROM` debe estar verificado en Resend. Si el correo no se
+puede enviar, la solicitud permanece como `Pendiente` para que el administrador
+pueda intentarlo nuevamente.
+
+El sistema crea la tabla automáticamente en el primer acceso. En instalaciones
+existentes agrega únicamente la columna `estado`, sin eliminar registros ni
+modificar las demás columnas.
