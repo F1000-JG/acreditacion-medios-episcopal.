@@ -12,6 +12,7 @@ de 2026.
 - Código único de registro.
 - Solicitudes guardadas como `Pendiente` hasta que un administrador las revise.
 - Aprobación y rechazo manual desde el panel administrativo.
+- Edición administrativa de todos los datos y de la fotografía sin alterar el código ni el estado.
 - Credencial individual con fotografía, disponible únicamente al aprobar.
 - Correo de aprobación o rechazo mediante Resend.
 - Enlace privado para descargar la credencial aprobada.
@@ -20,6 +21,7 @@ de 2026.
 - Enlace público del formulario listo para copiar desde el panel.
 - Eliminación segura de registros de prueba desde administración.
 - Impresión y descarga PDF de credenciales desde cada registro.
+- Acceso directo `Imprimir / PDF` para cada solicitud aprobada.
 - Búsqueda de comunicadores y reporte imprimible/PDF.
 - Fotografías almacenadas dentro de MySQL para conservarlas en Railway.
 - Diseño adaptable a computadora y celular.
@@ -29,14 +31,20 @@ de 2026.
 1. Crear una base MySQL llamada `acreditacion_medios`.
 2. Copiar `.env.example` como `.env` y completar los datos.
 3. Configurar esas variables en Apache/PHP o usar Docker.
-4. Ejecutar con Docker:
+4. Para iniciar la aplicación y MySQL juntos, ejecutar:
 
 ```bash
-docker build -t acreditacion-medios .
-docker run --env-file .env -p 8080:8080 acreditacion-medios
+docker compose up --build
 ```
 
-Abrir `http://localhost:8080`.
+Abrir `http://localhost:8080`. El panel administrativo está en
+`http://localhost:8080/admin/`; si no se define otra contraseña en `.env`, la
+contraseña local de prueba es `admin123`.
+
+Para detener los contenedores, usar `docker compose down`. Los registros se
+conservan en un volumen local de Docker. Para probar los correos, completar
+`RESEND_API_KEY`, `MAIL_FROM`, `APP_URL=http://localhost:8080` y
+`CREDENTIAL_SECRET` en `.env` antes de iniciar.
 
 ## Publicar en Railway
 

@@ -70,6 +70,7 @@ if ($q !== '') {
                     <td><span class="status-badge status-<?= strtolower($r['estado']) ?>"><?= htmlspecialchars($r['estado']) ?></span></td>
                     <td>
                         <div class="row-actions">
+                            <a class="edit-button" href="edit.php?id=<?= (int)$r['id'] ?>">Editar</a>
                             <?php if ($r['estado'] === 'Pendiente'): ?>
                                 <form method="post" action="review.php">
                                     <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['admin_csrf']) ?>">
@@ -84,7 +85,7 @@ if ($q !== '') {
                                     <button class="reject-button" type="submit">Rechazar</button>
                                 </form>
                             <?php elseif ($r['estado'] === 'Aprobada'): ?>
-                                <a href="credential.php?id=<?= (int)$r['id'] ?>">Credencial</a>
+                                <a class="credential-button" href="credential.php?id=<?= (int)$r['id'] ?>">Imprimir / PDF</a>
                             <?php endif; ?>
                             <form method="post" action="delete.php" onsubmit="return confirm('¿Seguro que querés borrar este registro? Esta acción no se puede deshacer.');">
                                 <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['admin_csrf']) ?>">
